@@ -15,7 +15,7 @@
 
 <!-- worker nodes -->
     <decltask id="Scheduler">
-        <exe reachable="true">~/home/alice/.../schedulerprocessorpair --id schedulerprocessorpair --session ${session} --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000 --randomReply false --channel-config name=scheduledatatoflp,type=pair,method=connect name=scheduledatafromepn,type=pair,method=connect --network-interface ib0 --io-threads ${ioThreads} -S "&lt;$FAIRROOT_ROOT/lib" -P dds</exe>
+        <exe reachable="true">~/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/schedulerprocessorpair --id schedulerprocessorpair --session ${session} --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000 --randomReply false --channel-config name=scheduledatatoflp,type=pair,method=connect name=scheduledatafromepn,type=pair,method=connect --network-interface ib0 --io-threads ${ioThreads} -S "&lt;$FAIRROOT_ROOT/lib" -P dds</exe>
         <properties>
             <id access="write">scheduledatatoflp</id>
 			<id access="write">scheduledatafromepn</id>
@@ -23,14 +23,14 @@
     </decltask>
 
 	<decltask id="Flp">
-        <exe reachable="true">~/home/Alice/.../flpprocessorpair --myId %taskIndex% --id flpprocessorpair_%taskIndex% --session ${session} --network-interface ib0 --channel-config name=scheduledatatoflp,type=pair,method=bind -S "&lt;$FAIRROOT_ROOT/lib" -P dds --dds-i scheduledatatoflp:%taskIndex%</exe>
+        <exe reachable="true">~/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/flpprocessorpair --myId %taskIndex% --id flpprocessorpair_%taskIndex% --session ${session} --network-interface ib0 --channel-config name=scheduledatatoflp,type=pair,method=bind -S "&lt;$FAIRROOT_ROOT/lib" -P dds --dds-i scheduledatatoflp:%taskIndex%</exe>
         <properties>
             <id access="write">scheduledatatoflp</id>
         </properties>
     </decltask>
 	
 	<decltask id="Epn">
-        <exe reachable="true">~/home/Alice/.../epnprocessorpair --id epnprocessorpair_%taskIndex% --session ${session}  --network-interface ib0 --channel-config name=scheduledatafromepn,type=pair,method=bind "&lt;$FAIRROOT_ROOT/lib" -P dds --gui false</exe>
+        <exe reachable="true">~/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/epnprocessorpair --id epnprocessorpair_%taskIndex% --session ${session}  --network-interface ib0 --channel-config name=scheduledatafromepn,type=pair,method=bind "&lt;$FAIRROOT_ROOT/lib" -P dds --gui false</exe>
         <properties>
             <id access="write">scheduledatatoflp</id>
         </properties>
