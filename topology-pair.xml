@@ -1,0 +1,68 @@
+<topology id="myTopology">
+    <var id="amountFLPs" value="5" />
+    <var id="amountEPNs" value="1" />
+
+    <var id="session" value="default" />
+    <var id="ioThreads" value="8" />
+
+    <!-- one property per communication channel name -->
+    <property id="scheduledatatoflp" />
+    <property id="scheduledatafromepn" />
+
+    <declrequirement id="flphosts" type="wnname" value="flp.*" />
+    <declrequirement id="epnhosts" type="wnname" value="epn.*" />
+	<declrequirement id="scheduler" type="wnname" value="scheduler.*" />
+
+<!-- worker nodes -->
+    <decltask id="Scheduler">
+        <exe reachable="true">~/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/schedulerprocessorpair --id schedulerprocessorpair --session ${session} --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000 --randomReply false --channel-config name=scheduledatatoflp,type=pair,method=connect name=scheduledatafromepn,type=pair,method=connect --network-interface ib0 --io-threads ${ioThreads} -S "&lt;$FAIRROOT_ROOT/lib" -P dds</exe>
+        <properties>
+            <id access="write">scheduledatatoflp</id>
+			<id access="write">scheduledatafromepn</id>
+        </properties>
+    </decltask>
+
+	<decltask id="Flp">
+        <exe reachable="true">~/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/flpprocessorpair --myId %taskIndex% --id flpprocessorpair_%taskIndex% --session ${session} --network-interface ib0 --channel-config name=scheduledatatoflp,type=pair,method=bind -S "&lt;$FAIRROOT_ROOT/lib" -P dds --dds-i scheduledatatoflp:%taskIndex%</exe>
+        <properties>
+            <id access="write">scheduledatatoflp</id>
+        </properties>
+    </decltask>
+	
+	<decltask id="Epn">
+        <exe reachable="true">~/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/epnprocessorpair --id epnprocessorpair_%taskIndex% --session ${session}  --network-interface ib0 --channel-config name=scheduledatafromepn,type=pair,method=bind "&lt;$FAIRROOT_ROOT/lib" -P dds --gui false</exe>
+        <properties>
+            <id access="write">scheduledatafromepn</id>
+        </properties>
+    </decltask>
+  
+
+
+    <declcollection id="flpcollection"><!-- still needed? -->
+        <requirements>
+            <id>flphosts</id>
+        </requirements>
+        <tasks>
+            <id>Flp</id>
+        </tasks>
+    </declcollection>
+
+	<declcollection id="epncollection"><!-- still needed? -->
+        <requirements>
+            <id>epnhosts</id>
+        </requirements>
+        <tasks>
+            <id>Epn</id>
+        </tasks>
+    </declcollection>
+
+
+    <main id="main">
+        <group id="FLPgroup" n="${numFLPs}">
+            <collection>flpcollection</collection>
+        </group>
+        <group id="EPNgroup" n="${numEPNs}">
+            <collection>epncollection</collection>
+        </group>
+    </main>
+</topology>
