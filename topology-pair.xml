@@ -32,8 +32,9 @@
     </decltask>
 	
 	<decltask id="Epn">
-        <exe reachable="true">~/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/epnprocessorpair --id epnprocessorpair_%taskIndex% --session ${session}  --network-interface ib0 --channel-config name=scheduledatafromepn,type=pair,method=bind "&lt;$FAIRROOT_ROOT/lib" -P dds --gui false</exe>
-        <requirements>
+       <!-- <exe reachable="true">~/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/epnprocessorpair --id epnprocessorpair_%taskIndex% --session ${session}  --network-interface ib0 --channel-config name=scheduledatafromepn,type=pair,method=bind "&lt;$FAIRROOT_ROOT/lib" -P dds --gui false</exe> -->
+ <exe reachable="true">~/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/epnprocessorpair --id epnprocessorpair_%taskIndex% --network-interface ib0 --channel-config name=scheduledatafromepn,type=pair,method=bind -S /home/fiebig/FairRoot/build2/lib/ -P dds</exe>       
+	   <requirements>
             <id>EpnWorker</id>
         </requirements>      
 	  <properties>
