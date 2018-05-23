@@ -25,7 +25,7 @@
     </decltask>
 
 	<decltask id="Flp">
-        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/flpprocessorpair --myId %taskIndex% --id flpprocessorpair_%taskIndex% --network-interface ib0 --channel-config name=sched-flp-chan,type=pair,method=connects,numSockets=1 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds --dds-i sched-flp-chan:%taskIndex%</exe>
+        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/flpprocessorpair --myId %taskIndex% --id flpprocessorpair_%taskIndex% --network-interface ib0 --channel-config name=sched-flp-chan,type=pair,method=connect,numSockets=1 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds --dds-i sched-flp-chan:%taskIndex%</exe>
         <requirements>
             <id>FlpWorker</id>
         </requirements>       
