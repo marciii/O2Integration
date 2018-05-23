@@ -13,7 +13,7 @@
 
 <!-- worker nodes -->
     <decltask id="Scheduler">
-        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/schedulerprocessorpair --id schedulerprocessorpair --session ${session} --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000 --randomReply false --channel-config name=scheduledatatoflp,type=pair,method=connect name=scheduledatafromepn,type=pair,method=connect --network-interface ib0 --io-threads ${ioThreads} -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
+        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/schedulerprocessorpair --id schedulerprocessorpair --session ${session} --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000 --randomReply false --channel-config name=scheduledatatoflp,type=pair,method=connect name=scheduledatafromepn,type=pair,method=connect --network-interface ib0 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
         <requirements>
             <id>SchedulerWorker</id>
         </requirements>
