@@ -14,7 +14,7 @@
 
 <!-- worker nodes -->
     <decltask id="Scheduler">
-        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/schedulerprocessorpair --id schedulerprocessorpair --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000 --randomReply false --channel-config name=sched-flp-chan,type=pair,method=bind,numSockets=${numFLPs} name=scheduledatafromepn,type=pair,method=connect,address=ipc:///tmp/scheduler-pair --network-interface enp11s0 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
+        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/schedulerprocessorpair --id schedulerprocessorpair --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000 --randomReply false --msgAutoscale false --channel-config name=sched-flp-chan,type=pair,method=bind,numSockets=${numFLPs} name=scheduledatafromepn,type=pair,method=connect,address=ipc:///tmp/scheduler-pair --network-interface enp11s0 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
         <requirements>
             <id>SchedulerWorker</id>
         </requirements>
@@ -49,10 +49,10 @@
 
     <main id="main">
         <task>Scheduler</task>
-        <group id="FlpGroup" n="5">
+        <group id="FlpGroup" n="${numFLPs}">
             <task>Flp</task>
         </group>
-        <group id="EpnGroup" n="1">
+        <group id="EpnGroup" n="${numEPNs}">
             <task>Epn</task>
         </group>
     </main>
