@@ -32,7 +32,7 @@
         </requirements>    
 		<properties>
             <id access="write">scheduledatatoflp</id>
-			<id access="write">answerfromflp</id>
+			<id access="read">answerfromflp</id>
         </properties>
     </decltask>
 	
