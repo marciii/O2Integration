@@ -13,7 +13,7 @@
 
 <!-- worker nodes -->
     <decltask id="Scheduler">
-        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-reqrep/schedulerprocessorreqrep --id schedulerprocessorreqrep --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000000 --randomReply false --msgAutoscale false --channel-config name=scheduledata,type=rep,method=bind,address=ipc:///tmp/scheduler-reqrep1 name=epndata,type=rep,method=bind,address=ipc:///tmp/scheduler-reqrep2 --network-interface enp11s0 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
+        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-reqrep/schedulerprocessorreqrep --id schedulerprocessorreqrep --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000000 --randomReply false --msgAutoscale false --scalingFlp false --channel-config name=scheduledata,type=rep,method=bind,address=ipc:///tmp/scheduler-reqrep1 name=epndata,type=rep,method=bind,address=ipc:///tmp/scheduler-reqrep2 --network-interface enp11s0 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
         <requirements>
             <id>SchedulerWorker</id>
         </requirements>        
