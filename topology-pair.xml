@@ -1,6 +1,6 @@
 <topology id="myTopology">
 
-    <var id="numFLPs" value="5" />
+    <var id="numFLPs" value="48" />
     <var id="numEPNs" value="1" />
 
     <!-- one property per communication channel name -->
@@ -8,13 +8,13 @@
     <property id="scheduledatafromepn" />
  <property id="sched-flp-chan" />
 
-    <declrequirement id="FlpWorker" type="wnname" value="flp" />
-    <declrequirement id="EpnWorker" type="wnname" value="epn" />
+    <declrequirement id="FlpWorker" type="wnname" value="flp.*" />
+    <declrequirement id="EpnWorker" type="wnname" value="epn.*" />
 	<declrequirement id="SchedulerWorker" type="wnname" value="scheduler" />
 
 <!-- worker nodes -->
     <decltask id="Scheduler">
-        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/schedulerprocessorpair --id schedulerprocessorpair --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000 --randomReply false --msgAutoscale false --scalingFlp false --channel-config name=sched-flp-chan,type=pair,method=bind,numSockets=${numFLPs} name=scheduledatafromepn,type=pair,method=connect,address=ipc:///tmp/scheduler-pair --network-interface enp11s0 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
+        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-pair/bin/schedulerprocessorpair --id schedulerprocessorpair --amountFlp=${numFLPs} --msgFreq 5000 --messageSize 1000 --randomReply false --msgAutoscale true --scalingFlp false --channel-config name=sched-flp-chan,type=pair,method=bind,numSockets=${numFLPs} name=scheduledatafromepn,type=pair,method=connect,address=ipc:///tmp/scheduler-pair --network-interface ib0 -S "/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/lib" -P dds</exe>
         <requirements>
             <id>SchedulerWorker</id>
         </requirements>
@@ -25,7 +25,7 @@
     </decltask>
 
 	<decltask id="Flp">
-        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/flpprocessorpair --myId %taskIndex% --id flpprocessorpair_%taskIndex% --network-interface enp11s0 --channel-config name=sched-flp-chan,type=pair,method=connect,numSockets=1 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds --dds-i sched-flp-chan:%taskIndex%</exe>
+        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-pair/bin/flpprocessorpair --myId %taskIndex% --id flpprocessorpair_%taskIndex% --network-interface ib0 --channel-config name=sched-flp-chan,type=pair,method=connect,numSockets=1 -S "/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/lib" -P dds --dds-i sched-flp-chan:%taskIndex%</exe>
         <requirements>
             <id>FlpWorker</id>
         </requirements>       
@@ -35,7 +35,7 @@
     </decltask>
 	
 	<decltask id="Epn">
- <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pair/epnprocessorpair --id epnprocessorpair_%taskIndex% --network-interface enp11s0 --channel-config name=scheduledatafromepn,type=pair,method=bind,address=ipc:///tmp/scheduler-pair -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>       
+ <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-pair/bin/epnprocessorpair --id epnprocessorpair_%taskIndex% --network-interface ib0 --channel-config name=scheduledatafromepn,type=pair,method=bind,address=ipc:///tmp/scheduler-pair -S "/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/lib" -P dds</exe>       
 	   <requirements>
             <id>EpnWorker</id>
         </requirements>      

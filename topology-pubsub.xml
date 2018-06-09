@@ -1,5 +1,5 @@
 <topology id="myTopology">
-    <var id="numFLPs" value="5" />
+    <var id="numFLPs" value="48" />
     <var id="numEPNs" value="1" />
 
 
@@ -8,13 +8,13 @@
 	<property id="answerfromflp" /> <!-- auch noch für epn? -->
     <property id="scheduledatafromepn" />
 
-    <declrequirement id="FlpWorker" type="wnname" value="flp" />
-    <declrequirement id="EpnWorker" type="wnname" value="epn" />
+    <declrequirement id="FlpWorker" type="wnname" value="flp.*" />
+    <declrequirement id="EpnWorker" type="wnname" value="epn.*" />
 	<declrequirement id="SchedulerWorker" type="wnname" value="scheduler" />
 
 <!-- worker nodes -->
     <decltask id="Scheduler">
-        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pubsub/schedulerprocessorpubsub --id schedulerprocessorpubsub --amountFlp=${numFLPs} --msgFreq 1000 --messageSize 1000000 --randomReply false --msgAutoscale false --scalingFlp false --channel-config name=scheduledatatoflp,type=pub,method=bind,address=ipc:///tmp/scheduler-pubsub1 name=scheduledatafromepn,type=pub,method=bind,address=ipc:///tmp/scheduler-pubsub2 name=answerfromflp,type=pair,method=bind,numSockets=${numFLPs} --network-interface enp11s0 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
+        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-pubsub/schedulerprocessorpubsub --id schedulerprocessorpubsub --amountFlp=${numFLPs} --msgFreq 3000 --messageSize 1000000 --randomReply false --msgAutoscale true --scalingFlp false --channel-config name=scheduledatatoflp,type=pub,method=bind,address=ipc:///tmp/scheduler-pubsub1 name=scheduledatafromepn,type=pub,method=bind,address=ipc:///tmp/scheduler-pubsub2 name=answerfromflp,type=pair,method=bind,numSockets=${numFLPs} --network-interface ib0 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
         <requirements>
             <id>SchedulerWorker</id>
         </requirements>        
@@ -26,7 +26,7 @@
     </decltask>
 
 	<decltask id="Flp">
-        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pubsub/flpprocessorpubsub --myId %taskIndex% --id flpprocessorpubsub_%taskIndex% --network-interface enp11s0 --channel-config name=scheduledatatoflp,type=sub,method=connect,address=ipc:///tmp/scheduler-pubsub1 name=answerfromflp,type=pair,method=connect,numSockets=1 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds --dds-i answerfromflp:%taskIndex%</exe>
+        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-pubsub/flpprocessorpubsub --myId %taskIndex% --id flpprocessorpubsub_%taskIndex% --network-interface ib0 --channel-config name=scheduledatatoflp,type=sub,method=connect,address=ipc:///tmp/scheduler-pubsub1 name=answerfromflp,type=pair,method=connect,numSockets=1 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds --dds-i answerfromflp:%taskIndex%</exe>
         <requirements>
             <id>FlpWorker</id>
         </requirements>    
@@ -37,7 +37,7 @@
     </decltask>
 	
 	<decltask id="Epn">
-        <exe reachable="true">/home/fiebig/FairRoot/build2/bin/examples/MQ/prototype-pubsub/epnprocessorpubsub --id epnprocessorpubsub_%taskIndex% --network-interface enp11s0 --channel-config name=scheduledatafromepn,type=pair,method=bind,address=ipc:///tmp/scheduler-pubsub2 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
+        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-pubsub/epnprocessorpubsub --id epnprocessorpubsub_%taskIndex% --network-interface ib0 --channel-config name=scheduledatafromepn,type=pair,method=bind,address=ipc:///tmp/scheduler-pubsub2 -S "&lt;/home/fiebig/FairRoot/build2/lib" -P dds</exe>
 	   <requirements>
             <id>EpnWorker</id>
         </requirements>          
