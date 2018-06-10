@@ -14,7 +14,7 @@
 
 <!-- worker nodes -->
     <decltask id="Scheduler">
-        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-pair/bin/schedulerprocessorpair --id schedulerprocessorpair --amountFlp=${numFLPs} --msgFreq 5000 --messageSize 1000 --randomReply false --msgAutoscale true --scalingFlp false --channel-config name=sched-flp-chan,type=pair,method=bind,numSockets=${numFLPs} name=scheduledatafromepn,type=pair,method=connect,address=ipc:///tmp/scheduler-pair --network-interface ib0 -S "/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/lib" -P dds</exe>
+        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-pair/bin/schedulerprocessorpair --id schedulerprocessorpair --amountFlp=${numFLPs} --msgFreq 5000 --messageSize 1000 --randomReply false --msgAutoscale true --scalingFlp false --rtt true --channel-config name=sched-flp-chan,type=pair,method=bind,numSockets=${numFLPs} name=scheduledatafromepn,type=pair,method=connect,address=ipc:///tmp/scheduler-pair --network-interface ib0 -S "/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/lib" -P dds</exe>
         <requirements>
             <id>SchedulerWorker</id>
         </requirements>
