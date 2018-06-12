@@ -1,5 +1,5 @@
 <topology id="myTopology">
-    <var id="numFLPs" value="48" />
+    <var id="numFLPs" value="6" />
     <var id="numEPNs" value="1" />
 
 
@@ -13,7 +13,7 @@
 
 <!-- worker nodes -->
     <decltask id="Scheduler">
-        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-reqrep/bin/schedulerprocessorreqrep --id schedulerprocessorreqrep --amountFlp=${numFLPs} --msgFreq 4000 --messageSize 10000 --randomReply false --msgAutoscale true --scalingFlp false --channel-config name=scheduledata,type=rep,method=bind name=epndata,type=rep,method=bind --network-interface ib0 -S "/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/lib" -P dds</exe>
+        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-reqrep/bin/schedulerprocessorreqrep --id schedulerprocessorreqrep --amountFlp=${numFLPs} --msgFreq 4000 --messageSize 16777216 --randomReply false --msgAutoscale false --scalingFlp true --channel-config name=scheduledata,type=rep,method=bind name=epndata,type=rep,method=bind --network-interface ib0 -S "/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/lib" -P dds</exe>
         <requirements>
             <id>SchedulerWorker</id>
         </requirements>        
