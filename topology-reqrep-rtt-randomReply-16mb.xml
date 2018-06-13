@@ -1,0 +1,58 @@
+<topology id="myTopology">
+    <var id="numFLPs" value="48" />
+    <var id="numEPNs" value="1" />
+
+
+    <!-- one property per communication channel name -->
+    <property id="scheduledata" />
+    <property id="epndata" />
+
+    <declrequirement id="FlpWorker" type="wnname" value="flp.*" />
+    <declrequirement id="EpnWorker" type="wnname" value="epn.*" />
+	<declrequirement id="SchedulerWorker" type="wnname" value="scheduler" />
+
+<!-- worker nodes -->
+    <decltask id="Scheduler">
+        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-reqrep/bin/schedulerprocessorreqrep --id schedulerprocessorreqrep --amountFlp=${numFLPs} --msgFreq 4000 --messageSize 16777216 --randomReply true --msgAutoscale false --scalingFlp false --channel-config name=scheduledata,type=rep,method=bind name=epndata,type=rep,method=bind --network-interface ib0 -S "/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/lib" -P dds</exe>
+        <requirements>
+            <id>SchedulerWorker</id>
+        </requirements>        
+		<properties>
+            <id access="write">scheduledata</id>
+	    <id access="write">epndata</id>
+        </properties>
+    </decltask>
+
+	<decltask id="Flp">
+        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-reqrep/bin/flpprocessorreqrep --myId %taskIndex% --id flpprocessorreqrep_%taskIndex% --network-interface ib0 --channel-config name=scheduledata,type=req,method=connect -S "/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/lib" -P dds</exe>
+        <requirements>
+            <id>FlpWorker</id>
+        </requirements>    
+		<properties>
+            <id access="read">scheduledata</id>
+        </properties>
+    </decltask>
+	
+	<decltask id="Epn">
+        <exe reachable="true">/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/share/fairbase/examples/MQ/prototype-reqrep/bin/epnprocessorreqrep --id epnprocessorreqrep_%taskIndex% --network-interface ib0 --channel-config name=epndata,type=req,method=connect -S "/home/mfiebig/alice/sw/slc7_x86-64/FairRoot/0-1/lib" -P dds</exe>
+	   <requirements>
+            <id>EpnWorker</id>
+        </requirements>          
+	   <properties>
+            <id access="read">epndata</id>
+        </properties>
+    </decltask>
+  
+
+
+    <main id="main">
+        <task>Scheduler</task>
+        <group id="FlpGroup" n="${numFLPs}">
+            <task>Flp</task>
+        </group>
+        <group id="EpnGroup" n="${numEPNs}">
+            <task>Epn</task>
+        </group>
+    </main>
+	
+</topology>
